@@ -55,7 +55,24 @@ The diagram below illustrates the proposed workflow from soil sampling to the TF
 | Regulated power supply | Powers the controller and peripherals |
 | Connecting wires and enclosure | Electrical connections and protection |
 
+<<<<<<< HEAD
 **Optional future additions:** temperature sensor, altitude/location input, soil moisture sensor, and microSD card for data logging.
+=======
+**Note:** Confirm your specific sensor's voltage, protocol, electrical interface, calibration requirements, and measurement units before wiring it to the ESP32. Some RS485 modules require 5 V power and proper 3.3 V logic interfacing.
+
+## System Workflow
+
+```text
+
+## System Architecture
+
+The following block diagram illustrates the operation of the
+TinyML-Based Coffee Soil Suitability Prediction System.
+
+![Coffee Soil Suitability System Block Diagram](Coffee Soil Suitability Analyzer Diagram.png)
+  
+```
+>>>>>>> def6c9d8ca496d1b96b3f840c092d7e31365e1ba
 
 ## Dataset and NARO Research
 
