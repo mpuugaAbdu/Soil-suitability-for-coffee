@@ -1,119 +1,135 @@
 # TinyML-Based Coffee Soil Suitability Prediction System
 
-An ESP32-based smart agriculture prototype that uses soil measurements and an embedded machine-learning model to classify coffee-growing conditions into three categories:
+An ESP32-based smart agriculture prototype that measures soil nutrients and uses an embedded machine-learning model to provide preliminary coffee soil suitability predictions for **Robusta**, **Arabica**, or **Not Suitable** conditions.
+
+> **Research prototype:** The current three-class training labels are derived/proxy labels, not independently verified field suitability outcomes. The Arabica/Robusta distinction requires additional environmental information, particularly altitude and temperature, and field validation before agronomic use.
+
+## Project Overview
+
+The system combines an **ESP32 microcontroller**, an **NPK soil sensor**, soil pH input, a **TinyML classifier**, and a **TFT display**. The ESP32 acquires sensor readings, validates units, applies the same preprocessing used during training, runs the machine-learning model locally, and presents the predicted class and confidence on the display.
+
+### Prediction Classes
 
 - **Suitable for Robusta**
 - **Suitable for Arabica**
 - **Not Suitable**
 
-> **Research prototype:** The current model uses provisional, rule-derived labels and synthetic training records anchored to published Ugandan regional soil measurements. Predictions are experimental and are **not** a substitute for laboratory soil testing or professional agronomic advice.
+The labels represent the prototype model's output, not a substitute for laboratory soil testing or professional agricultural advice.
 
-## Overview
+## System Architecture
 
-The system combines an **ESP32 microcontroller**, an **NPK soil sensor**, soil pH information, a **TinyML classifier**, and a **TFT display**. It is intended to demonstrate how local soil measurements can be processed directly on a microcontroller to support preliminary coffee-growing assessments in Uganda.
+The diagram below illustrates the proposed workflow from soil sampling to the TFT interface.
 
-The classifier uses four soil features in its current version: **pH, nitrogen (N), phosphorus (P), and potassium (K)**. Reliable differentiation between Arabica and Robusta also requires climatic and geographic variables such as temperature and altitude; these are planned improvements.
+![Coffee Soil Suitability Analyzer Block Diagram](Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png)
 
-## Objectives
+**Processing flow:**
 
-- Measure soil N, P, and K using an electronic soil sensor.
-- Prepare and analyze coffee-soil data informed by Ugandan research.
-- Train and evaluate a three-class machine-learning model.
-- Convert the trained model into a microcontroller-compatible TensorFlow Lite format.
-- Run inference locally on the ESP32 and present results on a TFT display.
+1. Collect soil measurements using the NPK sensor and obtain soil pH.
+2. Read the measurements with the ESP32.
+3. Validate sensor values, convert units, and standardize inputs.
+4. Execute the deployed TinyML model.
+5. Select the predicted coffee suitability class.
+6. Show the measurements and prediction on the TFT display.
 
-## Hardware
+> **Image path:** This README assumes `Coffee Soil Suitability Analyzer Diagram.png` is in the **same repository folder as `README.md`**. If you uploaded it to an `images/` folder, change the image path to `images/Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png`.
+
+## Project Objectives
+
+- Interface an NPK sensor with an ESP32 for soil nutrient acquisition.
+- Include soil pH as an input for coffee soil assessment.
+- Prepare and analyze Uganda-informed coffee soil data for machine learning.
+- Train and evaluate a three-class coffee suitability classifier.
+- Convert the trained model into an embedded TensorFlow Lite format.
+- Package the model and preprocessing constants as an Arduino-compatible library.
+- Display sensor readings, predictions, and confidence on a TFT screen.
+
+## Hardware Components
 
 | Component | Purpose |
-| --- | --- |
-| ESP32 development board | Sensor acquisition and on-device inference |
-| NPK soil sensor (typically RS485/Modbus) | Soil nitrogen, phosphorus, and potassium measurements |
-| RS485-to-UART interface | Communication between compatible NPK sensors and ESP32 |
-| Soil pH sensor | Soil acidity measurement |
-| TFT display | Sensor values, prediction, and system status |
-| Suitable power supply and wiring | Stable operation |
+|---|---|
+| ESP32 development board | Sensor acquisition and on-device ML inference |
+| NPK soil sensor | Nitrogen, phosphorus, and potassium measurements |
+| RS485-to-UART interface | Communication with an RS485 NPK sensor, if applicable |
+| Soil pH sensor/interface | Soil acidity measurement |
+| TFT LCD display | Live readings and prediction dashboard |
+| Regulated power supply | Powers the controller and peripherals |
+| Connecting wires and enclosure | Electrical connections and protection |
 
-**Note:** Confirm your specific sensor's voltage, protocol, electrical interface, calibration requirements, and measurement units before wiring it to the ESP32. Some RS485 modules require 5 V power and proper 3.3 V logic interfacing.
-
-## System Workflow
-
-```text
-Soil Sample
-    |
-    v
-NPK Sensor + Soil pH Input
-    |
-    v
-ESP32 Data Acquisition
-    |
-    v
-Unit Validation and Preprocessing
-    |
-    v
-TinyML Coffee Suitability Model
-    |
-    +--> Suitable for Robusta
-    +--> Suitable for Arabica
-    +--> Not Suitable
-    |
-    v
-TFT Display
-```
+**Optional future additions:** temperature sensor, altitude/location input, soil moisture sensor, and microSD card for data logging.
 
 ## Dataset and NARO Research
 
-The project draws on Ugandan coffee-soil research published through the **National Agricultural Research Organisation (NARO)**, particularly the study **“Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda.”** The study reports measurements and regional summaries from **717 soil samples across 45 coffee-growing districts**, including soil pH, N, P, K, and other properties.
+The project is informed by Ugandan coffee soil research published through the **National Agricultural Research Organisation (NARO)**, particularly the study *Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda*.
 
-Source: [NARO research repository](https://researchspace.naro.go.ug/items/7ede5a00-5c62-4414-b39c-0099b432767e)
+The study reports **717 soil samples from 45 coffee-growing districts** and investigates soil properties relevant to coffee cultivation, including pH, nitrogen, phosphorus, potassium, organic matter, and soil texture.
 
-**Data provenance:** The study's published regional summaries are not the same as the complete sample-level laboratory dataset. The prototype ML CSV contains **2,100 derived/synthetic rows** based on regional soil statistics and heuristic suitability rules. The three-class Arabica/Robusta labels are **temporary proxies**, not verified field labels. Do not describe these 2,100 rows as original NARO observations.
+**NARO research:** [Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda](https://researchspace.naro.go.ug/items/7ede5a00-5c62-4414-b39c-0099b432767e)
 
-### Model Inputs
+### Dataset Provenance
 
-| Input | Training unit |
-| --- | --- |
-| Soil pH | pH scale |
-| Nitrogen | % |
-| Phosphorus | mg/kg |
-| Potassium | meq/100 g |
+The prototype training CSV was **derived/synthetically generated around published Ugandan regional soil measurements**. It is **not** the original 717-row laboratory dataset. Its current three-class target was constructed using preliminary rules and geographic proxies. Therefore, a high test accuracy on this dataset does not establish real-world coffee suitability accuracy.
 
-**Important:** Many commercial NPK sensors report N, P, and K in mg/kg. Raw sensor outputs must not be passed directly to the model unless units, measurement basis, and calibration are compatible. A numerical unit conversion alone does not guarantee that sensor readings and laboratory measurements are equivalent.
+The prototype model-ready dataset includes the following raw input fields:
 
-## Machine-Learning Pipeline
+| Feature | Training unit |
+|---|---|
+| `pH` | pH |
+| `Nitrogen_percent` | % |
+| `Phosphorus_mg_kg` | mg/kg |
+| `Potassium_meq_100g` | meq/100 g |
+| `Coffee_Suitability_3Class` | Target label |
 
-1. Import and validate the CSV dataset.
-2. Perform exploratory data analysis and check class balance.
-3. Select deployable features and separate the three-class target.
-4. Split data into training, validation, and test subsets.
-5. Fit a standard scaler **using training data only**.
-6. Train a compact neural network and evaluate precision, recall, F1-score, accuracy, and confusion matrix.
-7. Convert the model to **TensorFlow Lite** and compare its predictions with the original model.
-8. Package the model, scaler parameters, labels, and inference code into an Arduino library.
+Additional engineered variables may be retained for analysis, but the first ESP32 model uses the four raw soil inputs shown above.
 
-The initial neural network uses **4 inputs → 16 hidden units → 8 hidden units → 3 softmax outputs**.
+## Machine Learning Workflow
 
-> **Evaluation caution:** Random splits of synthetic, rule-labeled data measure how well the model reproduces the synthetic labeling scheme; they do not establish accuracy on real Ugandan farms. Independent field and laboratory validation is required.
+```text
+Uganda-informed Soil Dataset
+             |
+             v
+   Cleaning and Validation
+             |
+             v
+  Exploratory Data Analysis
+             |
+             v
+      Feature Selection
+             |
+             v
+ Train / Validation / Test Split
+             |
+             v
+ Standardization (Training Data)
+             |
+             v
+  Neural Network Training
+             |
+             v
+ Evaluation and Confusion Matrix
+             |
+             v
+   TensorFlow Lite Conversion
+             |
+             v
+  Arduino Library Generation
+             |
+             v
+       ESP32 Inference
+```
 
-## Software and Tools
+### Model
 
-- Google Colab / Python
-- Pandas, NumPy, scikit-learn, Matplotlib
-- TensorFlow / TensorFlow Lite
-- Arduino IDE and ESP32 board support
-- ArduTFLite and its compatible TensorFlow Lite Micro runtime
+The initial classifier is a small neural network intended for resource-constrained embedded hardware. The training notebook evaluates it using held-out test data and exports a TensorFlow Lite model.
 
-## Training and Deployment
+**Important:** The dataset is synthetic/derived, and the current target labels are not independent ground-truth observations. Validation on real Ugandan coffee farms is required before interpreting the results as agronomic accuracy.
 
-1. Open the project training notebook in **Google Colab**.
-2. Upload `uganda_coffee_model_ready_3class.csv`.
-3. Run the notebook cells to train, evaluate, and convert the model.
-4. Download the generated `CoffeeSoilESP32.zip` library.
-5. Install the required Arduino inference runtime libraries using **Arduino IDE → Library Manager**.
-6. Install the generated ZIP via **Sketch → Include Library → Add .ZIP Library**.
-7. Open the included `CoffeeSoilPrediction` example, select the ESP32 board, and compile.
-8. Validate sensor inputs and units before replacing the example values with live readings.
+## Arduino / ESP32 Deployment
 
-### Arduino Inference Example
+The Google Colab training notebook generates an Arduino library ZIP named `CoffeeSoilESP32.zip`. The library includes the model, preprocessing constants, prediction classes, and an example sketch.
+
+The prototype library uses **ArduTFLite** with a compatible TensorFlow Lite Micro runtime.
+
+### Example Usage
 
 ```cpp
 #include <CoffeeSoilESP32.h>
@@ -128,61 +144,86 @@ void setup() {
     while (true) delay(1000);
   }
 
-  // Example only: values must match training units.
+  // Illustrative inputs, in the model's expected units.
   CoffeePrediction result = coffee.predict(
-    5.8,   // pH
-    0.18,  // Nitrogen (%)
-    35.0,  // Phosphorus (mg/kg)
-    0.80   // Potassium (meq/100 g)
+    5.8,    // Soil pH
+    0.18,   // Nitrogen (%)
+    35.0,   // Phosphorus (mg/kg)
+    0.80    // Potassium (meq/100 g)
   );
 
   Serial.print("Prediction: ");
   Serial.println(result.label);
-  Serial.print("Model confidence: ");
-  Serial.println(result.confidence, 3);
+
+  Serial.print("Confidence: ");
+  Serial.println(result.confidence, 4);
 }
 
-void loop() {}
+void loop() {
+}
 ```
 
-The example illustrates the **generated library API**. Compilation depends on a compatible Arduino ESP32 core and TensorFlow Lite runtime; verify those versions on your hardware.
+### Critical Sensor Unit Check
 
-## TFT Dashboard (Planned / Prototype Features)
+Many commercial NPK sensors report **N, P, and K in mg/kg**, while the initial model expects:
 
-- Live NPK and pH readings
+- Nitrogen in **percent (%)**
+- Phosphorus in **mg/kg**
+- Potassium in **meq/100 g**
+
+Sensor values **must not be passed directly** to the model until their measurement definitions and units have been checked. Conversion must match the nutrient forms and methods represented in the training data; a numeric unit conversion alone does not guarantee equivalence between different soil testing methods.
+
+## TFT Dashboard
+
+The planned TFT user interface includes:
+
+- Live N, P, K, and pH measurements
 - Three-class coffee suitability prediction
-- Per-class model scores
-- Sensor connection and error status
-- Nutrient status indicators
-- Measurement history and export (future enhancement)
+- Model probability/confidence display
+- Sensor connection and error indicators
+- Soil nutrient status and explanatory guidance
+- Optional measurement history and data logging
 
-Model confidence is **not** the same as agronomic certainty.
+## Proposed Repository Structure
+
+```text
+coffee-soil-suitability/
+├── README.md
+├── Coffee Soil Suitability Analyzer Diagram.png
+├── dataset/
+│   └── uganda_coffee_model_ready_3class.csv
+├── notebooks/
+│   └── Coffee_Soil_ESP32_Training_Arduino_Library.ipynb
+├── arduino/
+│   └── CoffeeSoilESP32/
+└── docs/
+```
+
+This structure is a suggested organization; only include files and folders that are actually committed to the repository.
 
 ## Limitations
 
-- Training labels are derived rather than verified against individual farm outcomes.
-- The present four-input model omits altitude, temperature, rainfall, drainage, and soil texture.
-- Low-cost NPK sensors require independent calibration and may differ from laboratory tests.
-- Regional soil averages do not describe every farm within a region.
-- The model requires validation using independent real-world soil samples before agricultural deployment.
+- The present training data and suitability labels are derived rather than independently measured ground truth.
+- NPK and pH alone are insufficient for reliable differentiation of Arabica and Robusta growing environments.
+- Temperature, altitude, rainfall, drainage, and other soil characteristics affect suitability.
+- Low-cost NPK sensors require calibration and comparison against laboratory measurements.
+- Model confidence is not a verified probability of successful coffee cultivation.
+- Predictions are preliminary and should not be used as the sole basis for planting decisions.
 
 ## Future Improvements
 
-- Collect labeled soil samples from Ugandan Arabica and Robusta farms.
-- Add altitude, temperature, rainfall, drainage, and soil texture.
-- Validate sensor readings against laboratory soil tests.
-- Compare model predictions against expert agronomic assessments.
-- Improve TFT navigation, data logging, and export capabilities.
-- Assess prediction reliability across different Ugandan coffee-growing regions.
+- Collect and label real soil samples from Ugandan coffee farms.
+- Add temperature, altitude, and other agronomically relevant inputs.
+- Validate NPK readings against laboratory soil analyses.
+- Retrain using independently verified Robusta/Arabica suitability labels.
+- Improve TFT navigation, soil status explanations, and historical records.
+- Add data logging, GPS/location metadata, and optional Wi-Fi reporting.
 
-## Reference
+## References
 
-National Agricultural Research Organisation (NARO), *Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda*. [Research repository record](https://researchspace.naro.go.ug/items/7ede5a00-5c62-4414-b39c-0099b432767e).
+- [National Agricultural Research Organisation (NARO) — Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda](https://researchspace.naro.go.ug/items/7ede5a00-5c62-4414-b39c-0099b432767e)
+- [TensorFlow Lite Micro](https://github.com/tensorflow/tflite-micro)
 
-## Project Status
+## Disclaimer
 
-**Prototype / ongoing development.** Model development and ESP32 integration require further field validation.
-
-## License
-
-No license has been selected for this repository. Add a `LICENSE` file if you wish to define reuse permissions.
+This project is intended for education, research, and prototype development. It does not replace professional soil analysis or agronomic recommendations.
