@@ -38,26 +38,14 @@ The classifier uses four soil features in its current version: **pH, nitrogen (N
 ## System Workflow
 
 ```text
-Soil Sample
-    |
-    v
-NPK Sensor + Soil pH Input
-    |
-    v
-ESP32 Data Acquisition
-    |
-    v
-Unit Validation and Preprocessing
-    |
-    v
-TinyML Coffee Suitability Model
-    |
-    +--> Suitable for Robusta
-    +--> Suitable for Arabica
-    +--> Not Suitable
-    |
-    v
-TFT Display
+
+## System Architecture
+
+The following block diagram illustrates the operation of the
+TinyML-Based Coffee Soil Suitability Prediction System.
+
+![Coffee Soil Suitability System Block Diagram](Coffee Soil Suitability Analyzer Diagram.png)
+  
 ```
 
 ## Dataset and NARO Research
