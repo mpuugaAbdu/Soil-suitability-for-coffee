@@ -86,39 +86,8 @@ Additional engineered variables may be retained for analysis, but the first ESP3
 
 ## Machine Learning Workflow
 
-```text
-Uganda-informed Soil Dataset
-             |
-             v
-   Cleaning and Validation
-             |
-             v
-  Exploratory Data Analysis
-             |
-             v
-      Feature Selection
-             |
-             v
- Train / Validation / Test Split
-             |
-             v
- Standardization (Training Data)
-             |
-             v
-  Neural Network Training
-             |
-             v
- Evaluation and Confusion Matrix
-             |
-             v
-   TensorFlow Lite Conversion
-             |
-             v
-  Arduino Library Generation
-             |
-             v
-       ESP32 Inference
-```
+![Machine Learning Workflow](images/Machine_Learning_Workflow.png)
+
 
 ### Model
 
