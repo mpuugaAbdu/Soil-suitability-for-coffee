@@ -33,7 +33,7 @@ The diagram below illustrates the proposed workflow from soil sampling to the TF
 5. Select the predicted coffee suitability class.
 6. Show the measurements and prediction on the TFT display.
 
-> **Image path:** This README assumes `Coffee Soil Suitability Analyzer Diagram.png` is in the **same repository folder as `README.md`**. If you uploaded it to an `images/` folder, change the image path to `images/Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png`.
+
 
 ## Project Objectives
 
