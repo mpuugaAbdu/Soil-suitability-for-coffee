@@ -193,6 +193,13 @@ This structure is a suggested organization; only include files and folders that 
 - Improve TFT navigation, soil status explanations, and historical records.
 - Add data logging, GPS/location metadata, and optional Wi-Fi reporting.
 
+- 
+## Project Demonstration Video
+
+Watch the demonstration of the Coffee Soil Suitability Analyzer, showcasing the system's operation, soil data processing, and ESP32-based machine learning inference.
+
+▶️ [Watch the Project Demonstration on YouTube](https://youtu.be/y52xTOXvOis)
+
 ## References
 
 - [National Agricultural Research Organisation (NARO) — Characterisation and Mapping of Soils in Major Coffee Growing Regions of Uganda](https://researchspace.naro.go.ug/items/7ede5a00-5c62-4414-b39c-0099b432767e)
