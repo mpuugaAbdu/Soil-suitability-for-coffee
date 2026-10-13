@@ -16,11 +16,13 @@ The system combines an **ESP32 microcontroller**, an **NPK soil sensor**, soil p
 
 The labels represent the prototype model's output, not a substitute for laboratory soil testing or professional agricultural advice.
 
+
 ## System Architecture
 
 The diagram below illustrates the proposed workflow from soil sampling to the TFT interface.
 
-![Coffee Soil Suitability Analyzer Block Diagram](Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png)
+![Coffee Soil Suitability Analyzer Block Diagram](images/Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png)
+
 
 **Processing flow:**
 
@@ -31,7 +33,7 @@ The diagram below illustrates the proposed workflow from soil sampling to the TF
 5. Select the predicted coffee suitability class.
 6. Show the measurements and prediction on the TFT display.
 
-> **Image path:** This README assumes `Coffee Soil Suitability Analyzer Diagram.png` is in the **same repository folder as `README.md`**. If you uploaded it to an `images/` folder, change the image path to `images/Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png`.
+
 
 ## Project Objectives
 
@@ -190,6 +192,13 @@ This structure is a suggested organization; only include files and folders that 
 - Retrain using independently verified Robusta/Arabica suitability labels.
 - Improve TFT navigation, soil status explanations, and historical records.
 - Add data logging, GPS/location metadata, and optional Wi-Fi reporting.
+
+- 
+## Project Demonstration Video
+
+Watch the demonstration of the Coffee Soil Suitability Analyzer, showcasing the system's operation, soil data processing, and ESP32-based machine learning inference.
+
+▶️ [Watch the Project Demonstration on YouTube](https://youtu.be/y52xTOXvOis)
 
 ## References
 
