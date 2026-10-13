@@ -55,7 +55,6 @@ The diagram below illustrates the proposed workflow from soil sampling to the TF
 | Regulated power supply | Powers the controller and peripherals |
 | Connecting wires and enclosure | Electrical connections and protection |
 
-<<<<<<< HEAD
 **Optional future additions:** temperature sensor, altitude/location input, soil moisture sensor, and microSD card for data logging.
 =======
 **Note:** Confirm your specific sensor's voltage, protocol, electrical interface, calibration requirements, and measurement units before wiring it to the ESP32. Some RS485 modules require 5 V power and proper 3.3 V logic interfacing.
