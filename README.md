@@ -16,11 +16,13 @@ The system combines an **ESP32 microcontroller**, an **NPK soil sensor**, soil p
 
 The labels represent the prototype model's output, not a substitute for laboratory soil testing or professional agricultural advice.
 
+
 ## System Architecture
 
 The diagram below illustrates the proposed workflow from soil sampling to the TFT interface.
 
-![Coffee Soil Suitability Analyzer Block Diagram](Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png)
+![Coffee Soil Suitability Analyzer Block Diagram](images/Coffee%20Soil%20Suitability%20Analyzer%20Diagram.png)
+
 
 **Processing flow:**
 
